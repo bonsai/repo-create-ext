@@ -1,9 +1,9 @@
 document.getElementById("openGithub").addEventListener("click", () => {
-  chrome.runtime.sendMessage({ type: "open-github-new" });
+  chrome.tabs.create({ url: "https://github.com/new" });
   window.close();
 });
 
 document.getElementById("openPanel").addEventListener("click", () => {
-  chrome.runtime.sendMessage({ type: "open-side-panel" });
+  chrome.sidePanel.open({ windowId: chrome.windows.WINDOW_ID_CURRENT }).catch(() => {});
   window.close();
 });
