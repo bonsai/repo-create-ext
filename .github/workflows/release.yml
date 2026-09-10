@@ -24,11 +24,8 @@ from pathlib import Path
 m=json.loads(Path('manifest.json').read_text())
 assert m['manifest_version'] == 3
 assert m['version']
-assert Path('popup.html').exists()
-assert Path('popup.js').exists()
-assert Path('sidepanel.html').exists()
-assert Path('sidepanel.js').exists()
-assert Path('background.js').exists()
+for path in ['popup.html','popup.js','sidepanel.html','sidepanel.js','styles.css']:
+    assert Path(path).exists(), path
 print('manifest', m['version'])
 PY
 
@@ -38,10 +35,11 @@ PY
           VERSION=$(python -c "import json; print(json.load(open('manifest.json'))['version'])")
           mkdir -p dist
           zip -r "dist/repo-create-ext-v${VERSION}.zip" \
-            manifest.json background.js popup.html popup.js sidepanel.html sidepanel.js styles.css README.md agent.md docs
+            manifest.json popup.html popup.js sidepanel.html sidepanel.js styles.css README.md agent.md docs
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_name }}
           generate_release_notes: true
           files: dist/*.zip
